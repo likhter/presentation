@@ -16,18 +16,64 @@ var PRESENTATION_SELECTOR = '.presentation',
     HEADER_SELECTOR = '.header',
     FOOTER_SELECTOR = '.footer',
     SLIDE_SELECTOR = '.slide',
-    $currentSlide = null;
+    $currentSlide = null,
+    $nextSlide = null,
+    $prevSlide = null;
 
 var effects = {
     toggle: function($current, $next) {
         $(current).toggle();
         $(next).toggle();
     }
-}
+};
+
+var applyKeyBindings = function() {
+    $.each(keyMap, function(code, method) {
+        $(document).bind('keydown.key' + code, function(e) {
+            var pressed = e.keyCode || e.which;
+            if (pressed == code) {
+                method();
+                return false;
+            }
+        });
+    });
+};
+
+var resetKeyBindings = function() {
+    console.log('reset key bindings');
+};
+
+var showPrevSlide = function() {
+    console.log('show prev slide');
+};
+
+var showNextSlide = function() {
+    console.log('show next slide');
+};
+
+var keyMap = {
+    // Prev: 33 -- pgup, 37 -- left, 38 -- up
+    33: showPrevSlide,
+    37: showPrevSlide,
+    38: showPrevSlide,
+
+    // Next: 34 -- pgdown, 39 -- right, 40 -- down
+    34: showNextSlide,
+    39: showNextSlide,
+    40: showNextSlide
+};
+
 
 var showSlide = function($newSlide) {
-    // @TODO
-}
+    // TODO HERE: apply effect
+    if ($currentSlide) {
+        $currentSlide.hide();
+    }
+    $newSlide.show();
+    $nextSlide = $newSlide.next(SLIDE_SELECTOR);
+    $prevSlide = $currentSlide;
+    $currentSlide = $newSlide;
+};
 
 var startPresentation = function($el) {
     // check for header and footer and display them
@@ -35,7 +81,8 @@ var startPresentation = function($el) {
     if (hnf.exists()) {
         hnf.show();
     }
-    $currentSlide = $ql.children(SLIDE_SELECTOR).first();
+    $currentSlide = $el.children(SLIDE_SELECTOR).first();
+    applyKeyBindings();
     showSlide($currentSlide);
 }
 
