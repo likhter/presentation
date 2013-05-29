@@ -3,14 +3,22 @@
 <html>
     <head>
         <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
         <script type="text/javascript" src="pres.js"></script>
+        <script type="text/javascript">
+            $(function() {
+                $(document.body).presentify();
+            });
+        </script>
     </head>
     <body>
+        <div class="contents">
+        </div>
         <div class="presentation light" data-pres-title="First presentation" data-pres-timeout="10" data-pres-default-effect="fade" data-pres-enumeration="true">
-            <div class="common_header">
+            <div class="header">
                 some header content
             </div>
-            <div class="common_footer">
+            <div class="footer">
                 some footer content
             </div>
             <div class="slide title" data-slide-enumerate="false">
