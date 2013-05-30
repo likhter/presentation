@@ -1,0 +1,66 @@
+html, body { 
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.presentation {
+    display: none;
+}
+
+.presentation .header, .presentation .footer {
+    height: 40px;
+    padding: 10px;
+    position: absolute;
+    left 0;
+}
+
+.presentation .header { top: 0; }
+.presentation .footer { bottom: 0; }
+
+.contents {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -100px;
+    margin-left: -200px;
+    width: 400px;
+    height: 200px;
+    padding: 20px;
+    background-color: #e8e8e8;
+    border: solid 1px black;
+}
+
+.contents div {
+    cursor: pointer;
+    font-size: 25px;
+}
+
+.contents div:hover {
+    color: darkblue;
+}
+
+.presentation .slide {
+    padding: 40px 10px 40px 10px;
+    display: none;
+    height: 100%;
+}
+
+/* title slide */
+.presentation .slide.title {
+    vertical-align: middle;
+    text-align: center;
+}
+
+.presentation .slide.title h1 {
+    font-size: 80px;
+    color: darkblue;
+}
+.presentation .slide.title h2 {
+    color: gray;
+    font-size: 35px;
+}
+.presentation .slide.title .author {
+    font-style: italic;
+}
+

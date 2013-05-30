@@ -44,11 +44,15 @@ var resetKeyBindings = function() {
 };
 
 var showPrevSlide = function() {
-    console.log('show prev slide');
+    if ($prevSlide.exists()) {
+        showSlide($prevSlide);
+    }
 };
 
 var showNextSlide = function() {
-    console.log('show next slide');
+    if ($nextSlide.exists()) {
+        showSlide($nextSlide);
+    }
 };
 
 var keyMap = {
@@ -71,7 +75,8 @@ var showSlide = function($newSlide) {
     }
     $newSlide.show();
     $nextSlide = $newSlide.next(SLIDE_SELECTOR);
-    $prevSlide = $currentSlide;
+    // $prevSlide = $currentSlide;
+    $prevSlide = $newSlide.prev(SLIDE_SELECTOR);
     $currentSlide = $newSlide;
 };
 
@@ -81,6 +86,7 @@ var startPresentation = function($el) {
     if (hnf.exists()) {
         hnf.show();
     }
+    $el.show();
     $currentSlide = $el.children(SLIDE_SELECTOR).first();
     applyKeyBindings();
     showSlide($currentSlide);
@@ -105,6 +111,7 @@ $.fn.presentify = function(config) {
                 text: presName
             })
             .bind('click', function() {
+                $container.hide();
                 startPresentation($presEl);
             })
             .appendTo($container);               
