@@ -16,6 +16,7 @@ var PRESENTATION_SELECTOR = '.presentation',
     HEADER_SELECTOR = '.header',
     FOOTER_SELECTOR = '.footer',
     SLIDE_SELECTOR = '.slide',
+    CONTENTS_SELECTOR = '.contents',
     $currentSlide = null,
     $nextSlide = null,
     $prevSlide = null;
@@ -40,7 +41,9 @@ var applyKeyBindings = function() {
 };
 
 var resetKeyBindings = function() {
-    console.log('reset key bindings');
+    $.each(keyMap, function(code, method) {
+        $(document).unbind('keydown.key' + code);
+    });
 };
 
 var showPrevSlide = function() {
@@ -52,6 +55,9 @@ var showPrevSlide = function() {
 var showNextSlide = function() {
     if ($nextSlide.exists()) {
         showSlide($nextSlide);
+    } else {
+        console.log('here');
+        exitPresentation();
     }
 };
 
@@ -90,11 +96,16 @@ var startPresentation = function($el) {
     $currentSlide = $el.children(SLIDE_SELECTOR).first();
     applyKeyBindings();
     showSlide($currentSlide);
-}
+};
+
+var exitPresentation = function() {
+    resetKeyBindings();
+    $(PRESENTATION_SELECTOR).hide();
+    $(CONTENTS_SELECTOR).show();
+};
 
 $.fn.presentify = function(config) {
-    var opts = $.extend({ renderContentsTo: '.contents' }, config),
-        presList = {};
+    var presList = {};
 
     this.children(PRESENTATION_SELECTOR).each(function(i, pres) {
         var $pres = $(pres);
@@ -105,7 +116,7 @@ $.fn.presentify = function(config) {
     if (titles.length == 1) {
         startPresentation(presList[titles[0]]);
     } else {
-        var $container = $(opts.renderContentsTo);
+        var $container = $(CONTENTS_SELECTOR);
         $.each(presList, function(presName, $presEl) {
             $('<div></div>', { 
                 text: presName
@@ -117,5 +128,5 @@ $.fn.presentify = function(config) {
             .appendTo($container);               
         });
     }
-}
+};
 
