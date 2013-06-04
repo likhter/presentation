@@ -2,6 +2,7 @@ html, body {
     height: 100%;
     margin: 0;
     padding: 0;
+    overflow: hidden;
 }
 
 .presentation {
@@ -41,9 +42,16 @@ html, body {
 }
 
 .presentation .slide {
-    padding: 40px 10px 40px 10px;
+    position: absolute;
+    top: 0; 
+    left: 0;
+    margin: 0;
+    padding: 40px 10px 40px 10px; 
+    overflow: hidden;
     display: none;
     height: 100%;
+    width: 100%;
+    display: none;
 }
 
 /* title slide */

@@ -14,19 +14,35 @@
             };
     })();
 
-    var PRESENTATION_SELECTOR = '.presentation',
-        HEADER_SELECTOR = '.header',
-        FOOTER_SELECTOR = '.footer',
-        SLIDE_SELECTOR = '.slide',
-        CONTENTS_SELECTOR = '.contents',
-        $currentSlide = null,
+    var presentationConfig, 
+        config = {
+            presentationSelector: '.presentation',
+            headerSelector: '.header',
+            footerSelector: '.footer',
+            slideSelector: '.slide',
+            presentationSelector: '.presentation',
+            headerSelector: '.header',
+            footerSelector: '.footer',
+            slideSelector: '.slide',
+            contentsSelector: '.contents'
+        };
+
+    var $currentSlide = null,
         $nextSlide = null,
         $prevSlide = null;
 
     var effects = {
         toggle: function($current, $next) {
-            $(current).toggle();
-            $(next).toggle();
+            $current.hide();
+            $next.show();
+        },
+        fade: function($current, $next) {
+            $current.fadeOut();
+            $next.fadeIn();
+        },
+        slideDown: function($current, $next) {
+            $current.slideUp();
+            $next.slideDown();
         }
     };
 
@@ -58,7 +74,6 @@
         if ($nextSlide.exists()) {
             showSlide($nextSlide);
         } else {
-            console.log('here');
             exitPresentation();
         }
     };
@@ -78,47 +93,56 @@
 
     var showSlide = function($newSlide) {
         // TODO HERE: apply effect
+        /*
         if ($currentSlide) {
             $currentSlide.hide();
         }
         $newSlide.show();
-        $nextSlide = $newSlide.next(SLIDE_SELECTOR);
+        */
+        var effect = $newSlide.data('intro-effect') || presentationConfig.defaultEffect || 'toggle';
+        effects[effect]($currentSlide, $newSlide);
+        $nextSlide = $newSlide.next(config.slideSelector);
         // $prevSlide = $currentSlide;
-        $prevSlide = $newSlide.prev(SLIDE_SELECTOR);
+        $prevSlide = $newSlide.prev(config.slideSelector);
         $currentSlide = $newSlide;
     };
 
     var startPresentation = function($el) {
         // check for header and footer and display them
-        var hnf = $el.children(HEADER_SELECTOR + ',' + FOOTER_SELECTOR);
+        var hnf = $el.children(config.headerSelector + ',' + config.footerSelector);
         if (hnf.exists()) {
             hnf.show();
         }
         $el.show();
-        $currentSlide = $el.children(SLIDE_SELECTOR).first();
+        // load config for this presentation
+        presentationConfig = $el.data();
+        $currentSlide = $el.children(config.slideSelector).first();
         applyKeyBindings();
         showSlide($currentSlide);
     };
 
     var exitPresentation = function() {
         resetKeyBindings();
-        $(PRESENTATION_SELECTOR).hide();
-        $(CONTENTS_SELECTOR).show();
+        $(config.presentationSelector).hide();
+        $(config.contentsSelector).show();
     };
 
-    $.fn.presentify = function(config) {
+    $.fn.presentify = function(cfg, effs) {
+        config = $.extend(config, cfg);
+        effects = $.extend(effects, effs);
+
         var presList = {};
 
-        this.children(PRESENTATION_SELECTOR).each(function(i, pres) {
+        this.children(config.presentationSelector).each(function(i, pres) {
             var $pres = $(pres);
-            presList[$pres.data('pres-title')] = $pres;
+            presList[$pres.data('title')] = $pres;
         });
 
         var titles = getKeys(presList);
         if (titles.length == 1) {
             startPresentation(presList[titles[0]]);
         } else {
-            var $container = $(CONTENTS_SELECTOR);
+            var $container = $(config.contentsSelector);
             $.each(presList, function(presName, $presEl) {
                 $('<div></div>', { 
                     text: presName
