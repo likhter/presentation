@@ -7,7 +7,9 @@
 !function(window, undefined) {
     // add .exists routine to jQuery
     if (typeof $.fn.exists !== 'function') {
-        $.fn.exists = function() { return this.length > 0; }; 
+        $.fn.exists = function() { 
+            return this.length > 0; 
+        }; 
     }
 
     /**
@@ -131,25 +133,6 @@
     };
 
     /**
-     * Keycode -> Handler
-     * See applyKeyBindings and resetKeyBindings methods.
-     * 
-     * @type {Object}
-     */
-    var keyMap = {
-        // Prev: 33 -- pgup, 37 -- left, 38 -- up
-        33: showPrevSlide,
-        37: showPrevSlide,
-        38: showPrevSlide,
-
-        // Next: 34 -- pgdown, 39 -- right, 40 -- down
-        34: showNextSlide,
-        39: showNextSlide,
-        40: showNextSlide
-    };
-
-
-    /**
      * Show new slide
      *
      * @function
@@ -197,6 +180,32 @@
         $(config.presentationSelector).hide();
         $(config.contentsSelector).show();
     };
+
+
+    /**
+     * Keycode -> Handler
+     * See applyKeyBindings and resetKeyBindings methods.
+     * 
+     * @type {Object}
+     */
+    var keyMap = {
+        // Prev: 33 -- pgup, 37 -- left, 38 -- up, 8 -- backspace
+        33: showPrevSlide,
+        37: showPrevSlide,
+        38: showPrevSlide,
+        8: showPrevSlide,
+
+        // Next: 34 -- pgdown, 39 -- right, 40 -- down, 13 -- enter, 32 -- space
+        34: showNextSlide,
+        39: showNextSlide,
+        40: showNextSlide,
+        13: showNextSlide,
+        32: showNextSlide,
+
+        // Exit: 27 -- escape
+        27: exitPresentation
+    };
+
 
     /**
      * Entrance point for plugin.
