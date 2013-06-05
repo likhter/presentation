@@ -213,6 +213,9 @@
      *
      * @function
      * @memberOf jQuery.fn
+     *
+     * @param {Object} cfg Configuration parameters (selectors)
+     * @param {Object} effs List of advanced effects
      */
     $.fn.presentify = function(cfg, effs) {
         // extend configs
